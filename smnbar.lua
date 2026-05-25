@@ -1,12 +1,12 @@
-_addon.author   = 'Yarbles - Asura';
-_addon.name     = 'smnbar';
-_addon.version  = '2.0.0';
+addon.author   = 'Yarbles - Asura';
+addon.name     = 'smnbar';
+addon.version  = '3.0.0';
 
 require 'common';
 local ui = require 'ui';
 local textures = require 'textures';
 
-ashita.register_event('load', function()
+ashita.events.register('load', 'smnbar_load', function()
   ui:Load();
 end);
 
@@ -16,13 +16,16 @@ local shiftDown = false;
 local winDown = false;
 local keyDown = nil;
 
-ashita.register_event('render', function()
+ashita.events.register('d3d_present', 'smnbar_present', function()
   ui:MainBar(ctrlDown, altDown, shiftDown, winDown, keyDown);
   ui:PetBar(ctrlDown, altDown, shiftDown, winDown, keyDown);
   ui:JaBar(ctrlDown, altDown, shiftDown, winDown, keyDown);
 end);
 
-ashita.register_event('key', function(key, down, blocked)
+ashita.events.register('key_data', 'smnbar_key_data', function(e)
+  local key = e.key;
+  local down = e.down;
+
   if (AshitaCore:GetChatManager():IsInputOpen()) then return false end;
 
   if (key == 0x1D or key == 0x9D) then -- ctrl
@@ -61,6 +64,6 @@ ashita.register_event('key', function(key, down, blocked)
   return false;
 end);
 
-ashita.register_event('unload', function()
+ashita.events.register('unload', 'smnbar_unload', function()
   ui:Unload();
 end);

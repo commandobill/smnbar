@@ -1,7 +1,15 @@
 local actions = require 'actions';
 local util = require 'util';
+local ffi = require 'ffi';
+local d3d = require 'd3d8';
 local mgr = AshitaCore:GetResourceManager();
+local C = ffi.C;
+local d3d8dev = d3d.get_device();
 local textures = {};
+
+ffi.cdef[[
+  HRESULT __stdcall D3DXCreateTextureFromFileA(IDirect3DDevice8* pDevice, const char* pSrcFile, IDirect3DTexture8** ppTexture);
+]];
 
 local buttons = require 'buttons';
 local spirit_buttons = require 'spirit_buttons';
@@ -10,16 +18,16 @@ local ja_buttons = require 'ja_buttons';
 local pet_buttons = nil; -- updated on pet change
 
 local function load_texture(name, size)
-  local path = string.format('%s/' .. size .. '/%s.png', _addon.path, name):gsub("[%?']", '_');
+  local path = string.format('%s/%s/%s.png', addon.path, size, name):gsub("[%?']", '_');
+  local texture_ptr = ffi.new('IDirect3DTexture8*[1]');
+  local res = C.D3DXCreateTextureFromFileA(d3d8dev, path, texture_ptr);
 
-  local res, texture = ashita.d3dx.CreateTextureFromFileA(path);
-  if (res ~= 0) then
-    -- Get the error information..
-    local _, err = ashita.d3dx.GetErrorStringA(res);
-    print(string.format('[Error] Failed to load background texture for slot: %s - Error: (%08X) %s', path, res, err));
+  if (res ~= C.S_OK) then
+    print(string.format('[Error] Failed to load background texture for slot: %s - Error: (%08X) %s', path, res, d3d.get_error(res)));
     return nil;
   end
-  return texture;
+
+  return d3d.gc_safe_release(ffi.cast('IDirect3DTexture8*', texture_ptr[0]));
 end
 
 function textures:Load()
@@ -35,14 +43,14 @@ function textures:Load()
         texture.action = actions:Get(texture.name);
       end
       if (texture.texture) then
-        texture.ptr = texture.texture:Get();
+        texture.ptr = tonumber(ffi.cast('uint32_t', texture.texture));
       end
 
       for _, command in ipairs(texture.commands or {}) do
         if (command.command) then
           command.texture = load_texture(command.command, 48);
           if (command.texture ~= nil) then
-            command.ptr = command.texture:Get();
+            command.ptr = tonumber(ffi.cast('uint32_t', command.texture));
           end
         end
       end
@@ -53,14 +61,12 @@ end
 function textures:Unload()
   for _, textures in ipairs({ buttons, spirit_buttons, ja_buttons }) do
     for _, texture in ipairs(textures) do
-      texture.texture:Release();
       texture.texture = nil;
       texture.ptr = nil;
       texture.action = nil;
 
       for _, command in ipairs(texture.commands or {}) do
         if (command.texture ~= nil) then
-          command.texture:Release();
           command.texture = nil;
         end
         command.ptr = nil;
