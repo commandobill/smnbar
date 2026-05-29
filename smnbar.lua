@@ -26,11 +26,7 @@ ashita.events.register('key_data', 'smnbar_key_data', function(e)
   local key = e.key;
   local down = e.down;
 
-<<<<<<< Updated upstream
-  if (AshitaCore:GetChatManager():IsInputOpen()) then return false end;
-=======
   if not (AshitaCore:GetChatManager():IsInputOpen() == 0x00) then return false end;
->>>>>>> Stashed changes
 
   if (key == 0x1D or key == 0x9D) then -- ctrl
     ctrlDown = down;

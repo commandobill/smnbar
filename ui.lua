@@ -98,29 +98,17 @@ function ui:PetBar(ctrlDown, altDown, shiftDown, winDown, key)
     end
     imgui.SameLine();
     bx, by = imgui.GetCursorScreenPos();
-<<<<<<< Updated upstream
-    imgui.SetCursorScreenPos({bx - 20, by});
-=======
     imgui.SetCursorScreenPos({bx - 24, by});
->>>>>>> Stashed changes
     local text = keys[i];
     -- local tw, th = imgui.CalcTextSize(text);  -- not implemented :(
     imgui.PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 3.8 });
     imgui.PushStyleColor(ImGuiCol_ChildBg, { 0, 0, 0, 0 });
     -- draw a clear frame to shift contents down...  setting y pos causes parent to grow strangely
-<<<<<<< Updated upstream
-      imgui.BeginChild('shortcut' .. i .. 'offset', {12, 30}, false);
-      imgui.PushStyleVar(ImGuiStyleVar_WindowPadding, { 2.5, 2 });
-      imgui.PushStyleVar(ImGuiStyleVar_ChildRounding, 3);
-      imgui.PushStyleColor(ImGuiCol_ChildBg, { 0.0, 0.0, 0.0, 0.65 });
-      imgui.BeginChild('shortcut' .. i, {12, 16}, false);
-=======
       imgui.BeginChild('shortcut' .. i .. 'offset', {SHORTCUT_W, 30}, false);
       imgui.PushStyleVar(ImGuiStyleVar_WindowPadding, { 4, 2 });
       imgui.PushStyleVar(ImGuiStyleVar_ChildRounding, 3);
       imgui.PushStyleColor(ImGuiCol_ChildBg, { 0.0, 0.0, 0.0, 0.65 });
       imgui.BeginChild('shortcut' .. i, {SHORTCUT_W, SHORTCUT_H}, false);
->>>>>>> Stashed changes
         imgui.TextColored({ 1.0, 1.0, 0.4, 1.0 }, text);
       imgui.EndChild();
       imgui.PopStyleColor();
@@ -170,29 +158,17 @@ function ui:JaBar(ctrlDown, altDown, shiftDown, winDown, key)
     end
     imgui.SameLine();
     bx, by = imgui.GetCursorScreenPos();
-<<<<<<< Updated upstream
-    imgui.SetCursorScreenPos({bx - 20, by});
-=======
     imgui.SetCursorScreenPos({bx - 24, by});
->>>>>>> Stashed changes
     local text = keys[i];
     -- local tw, th = imgui.CalcTextSize(text);  -- not implemented :(
     imgui.PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 3.8 });
     imgui.PushStyleColor(ImGuiCol_ChildBg, { 0, 0, 0, 0 });
     -- draw a clear frame to shift contents down...  setting y pos causes parent to grow strangely
-<<<<<<< Updated upstream
-      imgui.BeginChild('shortcut' .. i .. 'offset', {12, 30}, false);
-      imgui.PushStyleVar(ImGuiStyleVar_WindowPadding, { 2.5, 2 });
-      imgui.PushStyleVar(ImGuiStyleVar_ChildRounding, 3);
-      imgui.PushStyleColor(ImGuiCol_ChildBg, { 0.0, 0.0, 0.0, 0.65 });
-      imgui.BeginChild('shortcut' .. i, {12, 16}, false);
-=======
       imgui.BeginChild('shortcut' .. i .. 'offset', {SHORTCUT_W, 30}, false);
       imgui.PushStyleVar(ImGuiStyleVar_WindowPadding, { 4, 2 });
       imgui.PushStyleVar(ImGuiStyleVar_ChildRounding, 3);
       imgui.PushStyleColor(ImGuiCol_ChildBg, { 0.0, 0.0, 0.0, 0.65 });
       imgui.BeginChild('shortcut' .. i, {SHORTCUT_W, SHORTCUT_H}, false);
->>>>>>> Stashed changes
         imgui.TextColored({ 1.0, 1.0, 0.4, 1.0 }, text);
       imgui.EndChild();
       imgui.PopStyleColor();
